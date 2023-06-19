@@ -1,0 +1,79 @@
+main {
+	margin-top: 140px !important;
+}
+
+.tests {
+	padding-top: 10px;
+}
+.test {
+	transition: .2s;
+	width: 100%;
+	height: 50px;
+	background-color: rgba(0, 0, 0, .05);
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	font-weight: 400;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+.tests a {
+	text-decoration: none;
+}
+.test:hover {
+	background-color: rgba(0, 0, 0, .1);
+}
+.test:hover .link {
+	padding-right: 20px;
+}
+.tests-titles {
+	display: flex;
+	margin-top: 30px;
+}
+.tests-titles div {
+	font-size: 14px;
+	color: rgba(0, 0, 0, .4);
+	font-weight: 400;
+	/*border: 1px solid;*/
+	text-align: center;
+}
+.tests-titles .name {
+	width: 300px;
+}
+.tests-titles .subject {
+	width: 350px;
+}
+.tests-titles .questions {
+	width: 100px;
+}
+.tests-titles .time {
+	width: 200px;
+}
+.tests-titles .link {
+	width: 110px;
+}
+
+
+
+.test .name {
+	width: 300px;
+	padding-left: 20px;
+}
+.test .subject {
+	width: 350px;
+	text-align: center;
+}
+.test .questions {
+	width: 100px;
+	text-align: center;
+}
+.test .time {
+	width: 200px;
+	text-align: center;
+}
+.test .link {
+	transition: .2s;
+	width: 110px;
+	padding-right: 30px;
+	text-align: right;
+}

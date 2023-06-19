@@ -1,0 +1,556 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');*/
+
+/*Montressat :: Thin 100*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Thin.woff") format("woff");  
+	font-style: normal; 
+	font-weight: 100;
+} 
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-ThinItalic.woff") format("woff");  
+	font-style: italic; 
+	font-weight: 100;
+} 
+
+/*Montressat :: Extra Light 200*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-ExtraLightItalic.woff") format("woff");  
+	font-style: normal; 
+	font-weight: 200;
+} 
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-ExtraLight.woff") format("woff");  
+	font-style: italic; 
+	font-weight: 200;
+} 
+
+/*Montressat :: Light 300*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Light.woff") format("woff");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-LightItalic.woff") format("woff");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Regular 400*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Regular.woff") format("woff");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-RegularItalic.woff") format("woff");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Medium 500*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Medium.woff") format("woff"); 
+	font-style: normal; 
+	font-weight: 500;
+}
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-MediumItalic.woff") format("woff"); 
+	font-style: italic; 
+	font-weight: 500;
+}
+
+/*Montressat :: SemiBold 600*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-SemiBold.woff") format("woff"); 
+	font-style: normal; 
+	font-weight: 600;
+}  
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-SemiBoldItalic.woff") format("woff"); 
+	font-style: italic; 
+	font-weight: 600;
+}  
+
+/*Montressat :: Bold 700*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Bold.woff") format("woff"); 
+	font-style: normal; 
+	font-weight: 700;
+} 
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-BoldItalic.woff") format("woff"); 
+	font-style: italic; 
+	font-weight: 700;
+} 
+
+/*Montressat :: ExtraBold 800*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-ExtraBold.woff") format("woff"); 
+	font-style: normal; 
+	font-weight: 800;
+} 
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-ExtraBoldItalic.woff") format("woff"); 
+	font-style: italic; 
+	font-weight: 800;
+} 
+
+
+/*Montressat :: Black 900*/
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-Black.woff") format("woff");
+	font-style: normal; 
+	font-weight: 900;
+} 
+@font-face {
+	font-family: "Montserrat"; 
+	src: url("fonts/Montserrat-BlackItalic.woff") format("woff");
+	font-style: italic; 
+	font-weight: 900;
+}
+
+
+
+
+
+
+
+/*Brutal Type*/
+ @font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-ExtraLight.eot');
+    src: local('Brutal Type Extra Light'), local('fonts/BrutalType-ExtraLight'),
+        url('fonts/BrutalType-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-ExtraLight.woff2') format('woff2'),
+        url('fonts/BrutalType-ExtraLight.woff') format('woff'),
+        url('fonts/BrutalType-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-Medium.eot');
+    src: local('Brutal Type Medium'), local('fonts/BrutalType-Medium'),
+        url('fonts/BrutalType-Medium.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-Medium.woff2') format('woff2'),
+        url('fonts/BrutalType-Medium.woff') format('woff'),
+        url('fonts/BrutalType-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-Bold.eot');
+    src: local('Brutal Type Bold'), local('fonts/BrutalType-Bold'),
+        url('fonts/BrutalType-Bold.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-Bold.woff2') format('woff2'),
+        url('fonts/BrutalType-Bold.woff') format('woff'),
+        url('fonts/BrutalType-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-Thin.eot');
+    src: local('Brutal Type Thin'), local('fonts/BrutalType-Thin'),
+        url('fonts/BrutalType-Thin.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-Thin.woff2') format('woff2'),
+        url('fonts/BrutalType-Thin.woff') format('woff'),
+        url('fonts/BrutalType-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-ExtraBold.eot');
+    src: local('Brutal Type Extra Bold'), local('fonts/BrutalType-ExtraBold'),
+        url('fonts/BrutalType-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-ExtraBold.woff2') format('woff2'),
+        url('fonts/BrutalType-ExtraBold.woff') format('woff'),
+        url('fonts/BrutalType-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-Black.eot');
+    src: local('Brutal Type Black'), local('fonts/BrutalType-Black'),
+        url('fonts/BrutalType-Black.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-Black.woff2') format('woff2'),
+        url('fonts/BrutalType-Black.woff') format('woff'),
+        url('fonts/BrutalType-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType-Light.eot');
+    src: local('Brutal Type Light'), local('fonts/BrutalType-Light'),
+        url('fonts/BrutalType-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType-Light.woff2') format('woff2'),
+        url('fonts/BrutalType-Light.woff') format('woff'),
+        url('fonts/BrutalType-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brutal Type';
+    src: url('fonts/BrutalType.eot');
+    src: local('Brutal Type'), local('fonts/BrutalType'),
+        url('fonts/BrutalType.eot?#iefix') format('embedded-opentype'),
+        url('fonts/BrutalType.woff2') format('woff2'),
+        url('fonts/BrutalType.woff') format('woff'),
+        url('fonts/BrutalType.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+
+
+
+
+
+/*Robo :: Thin 100*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Thin.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 100;
+} 
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-ThinItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 100;
+} 
+
+/*Montressat :: Extra Light 200*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-ExtraLightItalic.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 200;
+} 
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-ExtraLight.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 200;
+} 
+
+/*Montressat :: Light 300*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Light.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-LightItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Regular 400*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Regular.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-RegularItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Medium 500*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Medium.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 500;
+}
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-MediumItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 500;
+}
+
+/*Montressat :: SemiBold 600*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-SemiBold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 600;
+}  
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-SemiBoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 600;
+}  
+
+/*Montressat :: Bold 700*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Bold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 700;
+} 
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-BoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 700;
+} 
+
+/*Montressat :: ExtraBold 800*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-ExtraBold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 800;
+} 
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-ExtraBoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 800;
+} 
+
+
+/*Montressat :: Black 900*/
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-Black.ttf") format("truetype");
+	font-style: normal; 
+	font-weight: 900;
+} 
+@font-face {
+	font-family: "Roboto"; 
+	src: url("fonts/Roboto-BlackItalic.ttf") format("truetype");
+	font-style: italic; 
+	font-weight: 900;
+}
+
+
+
+
+
+
+
+/*Robo :: Thin 100*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Thin.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 100;
+} 
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-ThinItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 100;
+} 
+
+/*Montressat :: Extra Light 200*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-ExtraLightItalic.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 200;
+} 
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-ExtraLight.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 200;
+} 
+
+/*Montressat :: Light 300*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Light.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-LightItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Regular 400*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Regular.ttf") format("truetype");  
+	font-style: normal; 
+	font-weight: 300;
+}
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-RegularItalic.ttf") format("truetype");  
+	font-style: italic; 
+	font-weight: 300;
+}
+
+/*Montressat :: Medium 500*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Medium.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 500;
+}
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-MediumItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 500;
+}
+
+/*Montressat :: SemiBold 600*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-SemiBold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 600;
+}  
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-SemiBoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 600;
+}  
+
+/*Montressat :: Bold 700*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Bold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 700;
+} 
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-BoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 700;
+} 
+
+/*Montressat :: ExtraBold 800*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-ExtraBold.ttf") format("truetype"); 
+	font-style: normal; 
+	font-weight: 800;
+} 
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-ExtraBoldItalic.ttf") format("truetype"); 
+	font-style: italic; 
+	font-weight: 800;
+} 
+
+
+/*Montressat :: Black 900*/
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-Black.ttf") format("truetype");
+	font-style: normal; 
+	font-weight: 900;
+} 
+@font-face {
+	font-family: "RobotoMono"; 
+	src: url("fonts/RobotoMono-BlackItalic.ttf") format("truetype");
+	font-style: italic; 
+	font-weight: 900;
+}
+
+
+
+
+
+
+
+
+
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_Black.woff2') format('woff2'),
+		url('fonts/Golos-Text_Black.woff') format('woff');
+	font-weight: 800;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_Bold.woff2') format('woff2'),
+		url('fonts/Golos-Text_Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_DemiBold.woff2') format('woff2'),
+		url('fonts/Golos-Text_DemiBold.woff') format('woff');
+	font-weight: 600;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_Medium.woff2') format('woff2'),
+		url('fonts/Golos-Text_Medium.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_Regular.woff2') format('woff2'),
+		url('fonts/Golos-Text_Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GolosText';
+	src:
+		url('fonts/Golos-Text_VF.woff2') format('woff2'),
+		url('fonts/Golos-Text_VF.woff') format('woff');
+	font-weight: 300;
+	font-style: normal;
+}

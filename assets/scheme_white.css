@@ -1,0 +1,21 @@
+:root {
+	--header_background_color: #fff;
+	--body_background_color: #F9F9F9;
+	--main_background_color: #fff;
+	--main_border_color: #E7E8EC;
+	--black_100: #000;
+	--black_090: #191919;
+	--black_080: #333333;
+	--black_070: #4d4d4d;
+	--black_060: #666666;
+	--black_050: #808080;
+	--black_040: #999999;
+	--black_030: #b3b3b3;
+	--black_020: #cccccc;
+	--black_010: #e6e6e6;
+	--black_005: #f2f2f2;
+	--white_100: #fff;
+	--header_active_tab_color: #f2f2f2;
+	/*--focus_elements_color: #E34E3A;*/
+	--focus_element_color: #19528D;
+}

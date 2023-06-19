@@ -1,0 +1,202 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-family: "rubik", "Montserrat", Arial;
+	font-weight: 400;
+	color: #000;
+	box-sizing: border-box;
+}
+
+*::selection {
+	background-color: gray;
+	color: #fff;
+}
+main {
+	margin-top: 80px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.custom-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #CCCCCC #999999;
+	padding-right: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar {
+	width: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+	background-color: rgba(0, 0, 0, .1);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	transition: .1s;
+	background-color: rgba(0, 0, 0, .2);
+	border-radius: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(0, 0, 0, .4);
+}
+
+ul {
+	/*margin-left: 20px;*/
+}
+ul li {
+	padding: 5px;
+}
+.container {
+	width: 1060px;
+}
+
+.svg {
+	width: 24px;
+	height: 24px;
+}
+
+.btn {
+	position: relative;
+	border-radius: 10px;
+	transition: .2s;
+	cursor: pointer;
+	height: 40px;
+	font-size: 16px;
+	/*z-index: 10;*/
+}
+.btn-primary {
+	background-color: #000;
+	color: #fff;
+	border: 1px solid transparent;
+}
+.btn-primary:hover {
+	transform: translateY(2px);
+	opacity: .9;
+}
+.btn-primary:active {
+	transform: translateY(5px);
+}
+
+.empty {
+	width: 100%;
+	text-align: center;
+	padding: 30px;
+	color: rgba(0, 0, 0, .4);
+}
+.loading {
+	position: relative;
+	opacity: .2 !important;
+}
+.loading::after {
+	position: absolute;
+	height: 40px;
+	width: 40px;
+	top: 50%;
+	transform: translateY(-50%);
+	content: "";
+	background-image: url("https://findcreek.com/assets/img/icons/3d-cube-sphere.svg");
+	background-repeat: no-repeat;
+	background-size: 30px;
+	background-position: center center;
+	filter: invert(1);
+	/*z-index: 50;*/
+	animation: loadingRotate 2s forwards infinite;
+}
+
+@keyframes loadingRotate {
+	from {
+		transform: translateY(-50%) rotate(0deg);
+	}
+	to {
+		transform: translateY(-50%) rotate(360deg);
+
+	}
+}
+
+.copy-field {
+	width: 100%;
+	border-radius: 10px;
+	height: 50px;
+	/*background-color: rgba(0, 0, 0, .04);*/
+	overflow: hidden;
+	display: flex;
+	border: 1px solid rgba(0, 0, 0, .1);
+}
+.copy-field input {
+	width: calc(100% - 50px);
+	border: none;
+	height: 100%;
+	background-color: transparent;
+	outline: none;
+	font-size: 16px;
+	padding-left: 17px;
+}
+.copy-field .copy {
+	transition: .1s;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, .04);
+}
+.copy-field .copy img {
+	transition: .1s;
+}
+.copy-field .copy:hover {
+	background-color: rgba(0, 0, 0, .08);
+}
+.copy-field .copy:active img {
+	transform: scale(.8);
+}
+
+
+
+.pps {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 600;
+	/*display: flex;*/
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+.pps .background {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .3);
+	backdrop-filter: blur(2px);
+	cursor: pointer;
+}
+.pps .pp {
+	position: absolute;
+	background-color: #fff;
+	border-radius: 15px;
+	width: 500px;
+	display: none;
+}
+.pps .pp .pp-header {
+	height: 50px;
+	border-bottom: 1px solid rgba(0, 0, 0, .3);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 17px;
+}
+.pps .pp .pp-close {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+}
+.pps .pp .pp-close img {
+	transition: .2s;
+}
+.pps .pp .pp-close:hover img {
+	transform: rotate(90deg);
+}
+.pps .pp .pp-content {
+	padding: 20px;
+}

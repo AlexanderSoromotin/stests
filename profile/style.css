@@ -1,0 +1,68 @@
+main {
+	margin-top: 140px !important;
+}
+
+.profile-info {
+	width: 100%;
+	height: 210px;
+	border-radius: 20px;
+	background-color: rgba(0, 0, 0, .05);
+	display: flex;
+	flex-direction: row;
+}
+.profile-info .user-info {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex: 1;
+	padding: 30px 30px 30px 0;
+}
+.profile-info .user-info .col {
+	display: flex;
+	flex-direction: column;
+	width: calc(50% - 30px);
+}
+
+.profile-info .user-image {
+	width: 210px;
+	height: 210px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.profile-info .user-image .image {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	border-radius: 10px;
+}
+.profile-info .user-image .image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.profile-info input {
+	padding: 0 0 10px 0;
+	border: none;
+	border-bottom: 1px solid #000;
+	font-size: 16px;
+	background-color: transparent;
+	outline: none;
+	margin-bottom: 30px;
+}
+.profile-info input:nth-last-child(1) {
+	margin-bottom: 0px;
+}
+
+.profile-info .user-info .user-more {
+	justify-content: space-between;
+}
+
+.profile-info .role {
+	display: flex;
+	align-items: center;
+}
+.profile-info .role img {
+	height: 19px;
+	margin-right: 5px;
+}

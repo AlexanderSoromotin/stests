@@ -21,7 +21,7 @@ $connection;
 $dbConnectParams = [
 	"stests" => [
 		"db_url" => "localhost",
-		"db_username" => "findcreek",
+		"db_username" => "stests",
 		"db_password" => $db_password,
 		"db_name" => "stests"
 	]

@@ -5,7 +5,7 @@ include_once 'secret.php';
 // Список переменных в сикрете
 // $db_password, $localSite, $JWTKey, $passwordSalt
 
-$link = "http://s-tests.findcreek.com";
+$link = "http://stests.findcreek.com";
 $localSiteLink = "http://s-tests.com";
 
 

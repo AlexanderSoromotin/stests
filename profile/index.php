@@ -45,9 +45,21 @@
                     </div>
                 </div>
             </div>
+
             <br><br><br><br>
+
             <h2>Пройденные тесты</h2>
-            <div class="empty">Тут ничего нет 😶‍🌫️</div>
+            <div class="tests-titles">
+                <div class="name">Название</div>
+                <div class="subject">Комната</div>
+                <div class="questions">Оценка</div>
+                <div class="time">Статус</div>
+            </div>
+            <div class="results tests">
+                <div class="empty">Тут ничего нет 😶‍🌫️</div>
+            </div>
+
+
         </div>
     </main>
 
@@ -72,6 +84,42 @@
             })
         }
         getProfileInfo();
+
+        function getResults () {
+            $.ajax({
+                url: "<?= $link ?>/api/tests.getResults/",
+                data: {
+                    token: localStorage.getItem("token")
+                },
+                success: (response) => {
+                    console.log("tests.getResult", response)
+                    response = response["response"];
+
+                    if (response.length == 0) {
+                        $(".tests-titles").remove();
+                    }
+
+                    for (i in response) {
+                        item = response[i];
+                        $(".results .empty").remove();
+
+                        let resultStatus = "Засчитан";
+                        if (item["test_time_limit"] * 60 < item["time_spent"]) {
+                            resultStatus = "Превышен лимит времени";
+                        }
+
+                        $(".results").append(`
+                            <div class="result test">
+                                <div class="name">${item["test_name"]}</div>
+                                <div class="subject">${item["room_name"]}</div>
+                                <div class="questions">${item["score"]} из 100</div>
+                                <div class="time">${resultStatus}</div>
+                            </div>`);
+                    }
+                }
+            })
+        }
+        getResults();
 
 	</script>
 </body>

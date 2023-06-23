@@ -45,6 +45,7 @@ ul li {
 }
 .container {
 	width: 1060px;
+	padding: 0 30px;
 }
 
 .svg {

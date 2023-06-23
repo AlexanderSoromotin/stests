@@ -55,6 +55,7 @@
         position: relative;
         height: 100%;
         width: 1060px;
+        padding: 0 30px;
         display: flex;
         justify-content: space-between;
     }

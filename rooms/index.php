@@ -18,13 +18,14 @@
 
 	<main>
         <div class="container">
-            <h2>Мои комнаты <button style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px" class="btn btn-primary">Создать</button></h2>
+            <h2 class="own-rooms-title">Мои комнаты <button style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px" class="btn btn-primary">Создать</button></h2>
             <div class="own-rooms">
                 <div class="empty">Вы не можете создать комнату 🫥</div>
                 <div class="rooms-list"></div>
+                <br><br><br><br>
             </div>
 
-            <br><br><br><br>
+
 
             <h2>Комнаты</h2>
             <div class="joined-rooms">
@@ -75,6 +76,8 @@
                 console.log("getRooms", userData)
                 if (userData["role_id"] == 2) {
                     $(".own-rooms .empty").remove();
+                } else {
+                    $(".own-rooms-title, .own-rooms").remove();
                 }
 
                 $.ajax({
@@ -104,6 +107,10 @@
                                     </div>
                                 </div>
                             </div>`);
+                        }
+
+                        if (response["joined"].length != 0) {
+                            $(".joined-rooms .empty").css({"display": "none"})
                         }
 
                         for (i in response["joined"]) {

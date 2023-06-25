@@ -451,7 +451,8 @@ where ro.user_id = $userID order by t.id desc;
         }
 
         $writer = new Xlsx($spreadsheet);
-        $fileName = $output["room_name"] . " - " . $output["test_name"] . ' - ' . date("d.m.Y H-i-s") . '.xlsx';
+//        $fileName = $output["room_name"] . " - " . $output["test_name"] . ' - ' . date("d.m.Y H-i-s") . '.xlsx';
+        $fileName = rand(1, 1000000000000) . ".xlsx";
         $writer->save('../../../storage/' . $fileName);
 
         return formulateResponse("$link/storage/" . $fileName);

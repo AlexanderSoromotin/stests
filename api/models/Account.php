@@ -53,7 +53,7 @@ class Account {
             select ro.*, r.name, (SELECT COUNT(*) FROM user_room WHERE room_id = ro.room_id) AS users 
             from room_owner ro
             join room r on r.id = ro.room_id
-            where user_id = $userID;");
+            where user_id = $userID order by id desc;");
 
         $userName = mysqli_fetch_assoc(mysqli_query($connection, "select name, surname, patronymic from user where id = $userID"));
 
@@ -274,11 +274,6 @@ class Account {
 
 		return formulateResponse($output);
 	}
-
-
-
-
-
 
 
 

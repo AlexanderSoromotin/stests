@@ -104,3 +104,13 @@ main {
 	background-color: rgba(0, 0, 0, .02);
 }
 
+.download-report {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 70px;
+}
+.download-report button {
+	width: 500px;
+}
+

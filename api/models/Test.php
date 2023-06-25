@@ -2,6 +2,11 @@
 
 include_once "includes.php";
 
+require_once '../../../vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class Test {
 
@@ -38,7 +43,7 @@ select t.*, r.name as room_name, (select count(*) from question where test_id = 
 from test t
 join room_owner ro on ro.id = t.room_id
 join room r on r.id = ro.room_id
-where ro.user_id = $userID and t.deleted_at is null order by t.id desc;
+where ro.user_id = $userID order by t.id desc;
         ");
 
 		$output = [
@@ -56,11 +61,11 @@ where ro.user_id = $userID and t.deleted_at is null order by t.id desc;
         }
 
         $availableTests = mysqli_query($connection, "
-        select t.*, (select count(*) from result where test_id = t.id) AS attempts_spent, r.name as room_name, (select count(*) from question where test_id = t.id) as questions_number
+        select t.*, (select count(*) from result where test_id = t.id and user_id = $userID) AS attempts_spent, r.name as room_name, (select count(*) from question where test_id = t.id) as questions_number
         from test t
-        join user_room ur on ur.id = t.room_id
+        join user_room ur on ur.room_id = t.room_id
         join room r on r.id = ur.room_id
-        where ur.user_id = $userID and t.deleted_at is null order by t.id desc;
+        where ur.user_id = $userID order by t.id desc;
         ");
 
         while ($item = mysqli_fetch_assoc($availableTests)) {
@@ -240,7 +245,8 @@ where ro.user_id = $userID and t.deleted_at is null order by t.id desc;
         global $connection;
 
         $result = mysqli_query($connection, "
-            select r.*, t.name as test_name, t.description as test_description, room.name as room_name, t.time_limit as test_time_limit            from result r
+            select r.*, t.name as test_name, t.description as test_description, room.name as room_name, t.time_limit as test_time_limit            
+            from result r
             join test t on r.test_id = t.id
             join user u on r.user_id = u.id
             join room on t.room_id = room.id
@@ -328,6 +334,127 @@ where ro.user_id = $userID and t.deleted_at is null order by t.id desc;
         $id = (int) mysqli_fetch_assoc(mysqli_query($connection, "select id from question where test_id = $testID order by id desc limit 1"))["id"];
 
         return formulateResponse($id);
+    }
+
+
+
+
+
+    public static function makeReport (int $testID, $userID) {
+        openConnection('stests');
+        global $connection, $link;
+
+
+        $result = mysqli_query($connection, "
+            select u.*
+            from test t
+            join room r on r.id = t.room_id
+            join user_room ur on ur.room_id = r.id
+            join user u on u.id = ur.user_id
+            where t.id = $testID
+        ");
+
+        $testInfo = mysqli_fetch_assoc(mysqli_query($connection, "
+            select t.*, r.name as room_name
+            from test t
+            join room r on r.id = t.room_id
+            where t.id = $testID
+        "));
+
+        $output = [
+            "users" => [],
+            "test_name" => $testInfo["name"],
+            "test_time_limit" => (int) $testInfo["time_limit"],
+            "room_name" => $testInfo["room_name"]
+        ];
+
+
+        while ($item = mysqli_fetch_assoc($result)) {
+            unset($item["token"]);
+            unset($item["role_id"]);
+
+            $item["result"] = [];
+            $output["users"][(int) $item["id"]] = $item;
+        }
+
+        $results = mysqli_query($connection, "select * from result where test_id = $testID");
+
+        while ($item = mysqli_fetch_assoc($results)) {
+            $item["score"] = (int) $item["score"];
+            $output["users"][(int) $item["user_id"]]["result"] = $item;
+        }
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->mergeCells("A1:C1");
+        $sheet->mergeCells("D1:I1");
+
+        $sheet->mergeCells("A2:C2");
+        $sheet->mergeCells("D2:I2");
+
+        $sheet->mergeCells("A3:C3");
+        $sheet->mergeCells("D3:I3");
+
+        $sheet->setCellValue("A1", "Название теста");
+        $sheet->setCellValue("A2", "Комната");
+        $sheet->setCellValue("A3", "Ограничение по времени");
+
+        $sheet->setCellValue("D1", $output["test_name"]);
+        $sheet->setCellValue("D2", $output["room_name"]);
+        $sheet->setCellValue("D3", $output["test_time_limit"]);
+
+        $sheet->mergeCells("A6:D6");
+        $sheet->mergeCells("E6:F6");
+        $sheet->mergeCells("H6:I6");
+
+        $sheet->setCellValue("A6", "ФИО");
+        $sheet->setCellValue("E6", "Затрачено времени");
+        $sheet->setCellValue("G6", "Оценка");
+        $sheet->setCellValue("H6", "Статус");
+
+        $startFrom = 7;
+        foreach ($output["users"] as $key => $value) {
+            $sheet->mergeCells("A$startFrom:D$startFrom");
+            $sheet->mergeCells("E$startFrom:F$startFrom");
+            $sheet->mergeCells("H$startFrom:I$startFrom");
+
+            $sheet->setCellValue("A$startFrom", "$value[surname] $value[name] $value[patronymic]");
+
+            if (count($value["result"]) == 0) {
+                $sheet->setCellValue("E$startFrom", "-");
+                $sheet->setCellValue("G$startFrom", "-");
+                $sheet->setCellValue("H$startFrom", "Не решён");
+            } else {
+                $details = json_decode($value["result"]["details"], 1);
+
+                $timeSpent = (int) $details["time_spent"];
+                $secs = $timeSpent;
+                $mins = floor($timeSpent / 60);
+
+                if (strlen($secs) == 1) {
+                    $secs = "0" . $secs;
+                }
+
+                $status = "Не засчитано";
+                if ((int) $output["test_time_limit"] * 60 >= $timeSpent or $output["test_time_limit"] == 0) {
+                    $status = "Засчитано";
+
+                }
+
+                $sheet->setCellValue("E$startFrom", "$mins:$secs");
+                $sheet->setCellValue("G$startFrom", $value["result"]["score"]);
+                $sheet->setCellValue("H$startFrom", $status);
+            }
+
+            $startFrom++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = $output["room_name"] . " - " . $output["test_name"] . ' - ' . date("d.m.Y H-i-s") . '.xlsx';
+        $writer->save('../../../storage/' . $fileName);
+
+        return formulateResponse("$link/storage/" . $fileName);
     }
 
 }

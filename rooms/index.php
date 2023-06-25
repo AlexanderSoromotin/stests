@@ -18,7 +18,7 @@
 
 	<main>
         <div class="container">
-            <h2 class="own-rooms-title">Мои комнаты <button style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px" class="btn btn-primary">Создать</button></h2>
+            <h2 class="own-rooms-title">Мои комнаты <button style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px" class="btn create-room btn-primary">Создать</button></h2>
             <div class="own-rooms">
                 <div class="empty">Вы не можете создать комнату 🫥</div>
                 <div class="rooms-list"></div>
@@ -51,13 +51,13 @@
 
 
                 <div>Участники</div>
-                <div class="members custom-scrollbar"> </div>
+                <div class="members custom-scrollbar"></div>
 
 
 
                 <div>Приглашение</div>
                 <div class="copy-field">
-                    <input type="text" placeholder="Сылка для приглашения">
+                    <input readonly type="text" placeholder="Сылка для приглашения">
                     <div class="copy">
                         <img class="svg" src="<?= $icons ?>/copy.svg" alt="">
                     </div>
@@ -74,11 +74,16 @@
         function getRooms () {
             getProfileInfo((userData) => {
                 console.log("getRooms", userData)
+
                 if (userData["role_id"] == 2) {
-                    $(".own-rooms .empty").remove();
+                    $(".own-rooms .empty").css({"display": "none"});
                 } else {
                     $(".own-rooms-title, .own-rooms").remove();
                 }
+
+                $(".own-rooms .room").remove();
+                $(".joined-rooms .room").remove();
+
 
                 $.ajax({
                     url: "<?= $link ?>/api/account.getRooms/",
@@ -153,12 +158,16 @@
                     success: (response) => {
                         console.log("rooms.getInfo", response);
                         response = response["response"];
+                        $("#pp-edit-room .member").remove();
+
                         for (i in response["users"]) {
                             item = response["users"][i];
                             console.log(item)
 
+
+
                             $("#pp-edit-room .members").append(`
-                            <div class="member">
+                            <div class="member" data-user-id="${item["user_id"]}">
                                 <div class="member-info">
                                     <div data-user-id="${item["user_id"]}" class="name">${item["user_surname"]} ${item["user_name"]} ${item["user_patronymic"]}</div>
                                     <div class="login">@${item["user_login"]}</div>
@@ -170,6 +179,7 @@
                         $("#pp-edit-room .copy-field input").val("<?= $link ?>/?inv="+ encodeURI(response["room_data"]["invitation_code"]))
                         $("#pp-edit-room .pp-title").text("Комната "+ response["room_data"]["name"])
                         $("#pp-edit-room .room-name input").val(response["room_data"]["name"])
+                        $("#pp-edit-room").attr("data-room-id", response["room_data"]["id"])
                     }
                 })
             }
@@ -178,7 +188,72 @@
             $("#" + id).css({"display": "inline"})
         })
 
-	</script>
+        $(document).on("input keyup", "#pp-edit-room .room-name input", function () {
+            roomId = $(this).parents("#pp-edit-room").attr("data-room-id")
+            name = $(this).val();
+            console.log(roomId)
+
+            $.ajax({
+                url: "<?= $link ?>/api/rooms.setInfo/",
+                data: {
+                    token: localStorage.getItem("token"),
+                    room_id: roomId,
+                    name: name
+                },
+                success: (response) => {
+                    console.log("rooms.setInfo", response);
+                }
+            })
+        })
+
+        $(document).on("click", "#pp-edit-room .member .remove-member", function () {
+            userId = Number($(this).parents(".member").attr("data-user-id"));
+            roomId = $(this).parents("#pp-edit-room").attr("data-room-id");
+
+            $(this).parents(".member").remove();
+
+            $.ajax({
+                url: "<?= $link ?>/api/rooms.removeUser/",
+                data: {
+                    token: localStorage.getItem("token"),
+                    room_id: roomId,
+                    user_id: userId
+                },
+                success: (response) => {
+                    console.log("rooms.removeUser", response);
+                }
+            })
+        })
+
+        $(document).on("click", ".copy-field .copy", function () {
+            copyToClipboard($(this).parents(".copy-field").find("input").val())
+        })
+
+        function copyToClipboard(text) {
+            console.log("copying", text);
+
+            var $tempInput = $('<input>');
+            $('body').append($tempInput);
+            $tempInput.val(text).select();
+            document.execCommand('copy');
+            $tempInput.remove();
+        }
+
+        $(".create-room").click(function () {
+            $.ajax({
+                url: "<?= $link ?>/api/rooms.create/",
+                data: {
+                    token: localStorage.getItem("token"),
+                },
+                success: (response) => {
+                    console.log("rooms.create", response);
+                    getRooms();
+                }
+            })
+        })
+
+
+    </script>
 
     <?php
         include_once "../inc/ui/footer.php";

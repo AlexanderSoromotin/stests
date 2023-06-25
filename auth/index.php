@@ -29,6 +29,7 @@
 
 	<script type="text/javascript">
         userToken = localStorage.getItem("token");
+        invitation = "<?= $_GET["inv"] ?>";
         if (userToken != undefined && userToken != "" && userToken != "") {
             location.href = "../";
         }
@@ -56,7 +57,12 @@
                     console.log("auth.getToken", response);
                     if (typeof(response["response"]) == "string") {
                         localStorage.setItem("token", response["response"]);
-                        location.href = "../";
+                        if (invitation != "") {
+                            location.href = "../?inv=" + invitation;
+                        } else {
+                            location.href = "../";
+                        }
+
                     } else {
                         $(".form button").css({"background-color": "red"})
                         setTimeout(() => {

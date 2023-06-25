@@ -43,6 +43,10 @@
                 </div>
             </div>
 
+            <div class="download-report">
+                <button class="btn btn-primary">Скачать отчёт</button>
+            </div>
+
             <center><h2 style="margin-bottom: 20px">Вопросы</h2></center>
             <div class="questions">
 
@@ -287,6 +291,35 @@
         $(document).on("change", ".test-info select", function () {
             id = Number($(this).parents(".test-info").attr("data-test-id"));
             saveTest(id)
+        })
+
+        function downloadFile(url) {
+            console.log("Скачивание", url)
+            // Создаем временную ссылку
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = url.substr(url.lastIndexOf('/') + 1);
+
+            // Добавляем ссылку на страницу и эмулируем клик
+            $(link).appendTo('body');
+            link.click();
+
+            // Удаляем ссылку
+            $(link).remove();
+        }
+
+        $(".download-report button").click(function () {
+            $.ajax({
+                url: "<?= $link ?>/api/tests.makeReport/",
+                data: {
+                    token: localStorage.getItem("token"),
+                    test_id: testId
+                },
+                success: (response) => {
+                    console.log("test.makeReport", response)
+                    downloadFile(response["response"]);
+                }
+            })
         })
 
 

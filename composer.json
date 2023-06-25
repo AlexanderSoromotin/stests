@@ -1,0 +1,8 @@
+{
+  "config": {
+    "disable-tls": true
+  },
+  "require": {
+    "phpoffice/phpspreadsheet": "^1.29"
+  }
+}

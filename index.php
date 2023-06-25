@@ -20,10 +20,25 @@
 
     <script type="text/javascript">
         userToken = localStorage.getItem("token");
+        invitation = "<?= $_GET["inv"] ?>";
+        console.log("invitation", invitation);
+
         if (userToken == undefined || userToken == "") {
-            location.href = "/auth";
+            if (invitation != "") {
+                location.href = "/auth/?inv=" + invitation;
+
+            } else {
+                location.href = "/auth";
+            }
+
         } else {
-            location.href = "/profile";
+            if (invitation != "") {
+                location.href = "/invitation/?inv=" + invitation;
+
+            } else {
+                location.href = "/profile";
+            }
+
         }
     </script>
 </body>

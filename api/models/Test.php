@@ -43,7 +43,7 @@ select t.*, r.name as room_name, (select count(*) from question where test_id = 
 from test t
 join room_owner ro on ro.id = t.room_id
 join room r on r.id = ro.room_id
-where ro.user_id = $userID order by t.id desc;
+where ro.user_id = $userID order by t.id asc;
         ");
 
 		$output = [
@@ -65,7 +65,7 @@ where ro.user_id = $userID order by t.id desc;
         from test t
         join user_room ur on ur.room_id = t.room_id
         join room r on r.id = ur.room_id
-        where ur.user_id = $userID order by t.id desc;
+        where ur.user_id = $userID order by t.id asc;
         ");
 
         while ($item = mysqli_fetch_assoc($availableTests)) {
@@ -456,6 +456,39 @@ where ro.user_id = $userID order by t.id desc;
         $writer->save('../../../storage/' . $fileName);
 
         return formulateResponse("$link/storage/" . $fileName);
+    }
+
+
+
+
+
+
+
+
+    public static function create (int $userID) {
+        openConnection('stests');
+        global $connection;
+
+        $roomID = (int) mysqli_fetch_assoc(mysqli_query($connection, "
+        select r.id
+        from user u
+        join room_owner ro on ro.user_id = u.id
+        join room r on r.id = ro.room_id
+        where u.id = $userID order by id desc
+        limit 1
+        "))["id"];
+
+        if ($roomID == 0) {
+            return formulateResponse(0);
+        }
+
+        mysqli_query($connection, "
+            insert into test 
+            (name, description, attempts, time_limit, room_id)
+            values
+            ('Новый тест', 'Описание теста', 1, 0, $roomID)");
+
+        return formulateResponse(1);
     }
 
 }

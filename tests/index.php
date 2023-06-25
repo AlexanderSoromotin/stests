@@ -140,6 +140,19 @@
         }
         updateTests();
 
+        $(".create-test").click(function () {
+            $.ajax({
+                url: "<?= $link ?>/api/tests.create/",
+                data: {
+                    token: localStorage.getItem("token")
+                },
+                success: (response) => {
+                    console.log("tests.create", response)
+                    updateTests();
+                }
+            })
+        })
+
 	</script>
 </body>
 </html>

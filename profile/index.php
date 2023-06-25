@@ -78,7 +78,7 @@
                     $(".user-info input:eq(0)").val(response["surname"]);
                     $(".user-info input:eq(1)").val(response["name"]);
                     $(".user-info input:eq(2)").val(response["patronymic"]);
-                    $(".user-info input:eq(3)").val(response["login"]);
+                    $(".user-info input:eq(3)").val("@" + response["login"]);
                     $(".user-info .role-name").text(response["role_name"]);
                 }
             })

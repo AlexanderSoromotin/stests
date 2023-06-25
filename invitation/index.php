@@ -18,7 +18,7 @@
 
 	<main>
         <div class="container">
-            <h2>Вас пригласили в комнату ИСП-12-13 2024 АБ</h2>
+            <h2>Вас пригласили в комнату</h2>
 
             <div class="inv">
                 <div class="block">

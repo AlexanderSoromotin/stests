@@ -9,7 +9,7 @@ convertGetToPost();
 $tokenData = explode(".", decrypt($_POST["token"], "key"));
 $userID = (int) $tokenData[0];
 
-$response = Test::updateTest((int) $_POST["test_id"], $_POST["name"], $_POST["description"], (int) $_POST["time_limit"], (int) $_POST["room_id"], $userID);
+$response = Test::updateTest((int) $_POST["test_id"], $_POST["name"], $_POST["description"], (int) $_POST["time_limit"], (int) $_POST["attempts"], $_POST["date"], (int) $_POST["room_id"], $userID);
 echoJSON($response);
 
 

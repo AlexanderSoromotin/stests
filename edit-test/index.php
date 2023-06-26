@@ -33,7 +33,17 @@
 
                 <div class="input">
                     <label for="">Ограничение по времени</label>
-                    <input name="test_time_limit" rows="4" type="number" placeholder="Введите количество минут">
+                    <input name="test_time_limit" type="number" placeholder="Введите количество минут">
+                </div>
+
+                <div class="input">
+                    <label for="">Количество попыток</label>
+                    <input name="test_attempts" type="number" placeholder="Введите разрешённое количество попыток">
+                </div>
+
+                <div class="input">
+                    <label for="">Дата тестирования</label>
+                    <input name="test_date" type="date" placeholder="Выберите дату тестирования">
                 </div>
 
                 <div class="rooms">
@@ -164,6 +174,9 @@
                     // console.log("room", room)
                     $("select[name='room']").append(room)
 
+                    $("input[name='test_date']").val(response["available_date"].substr(0, 10))
+                    $("input[name='test_attempts']").val(response["attempts"])
+
                     $.ajax({
                         url: "<?= $link ?>/api/tests.getQuestions/",
                         data: {
@@ -220,6 +233,9 @@
             let name = $("input[name='test_name']").val();
             let description = $("textarea[name='test_description']").val();
             let timeLimit = $("input[name='test_time_limit']").val();
+            let attempts = $("input[name='test_attempts']").val();
+            let date = $("input[name='test_date']").val();
+
             let roomId = $(".test-info select option:selected").attr("data-room-id");
 
             console.log(name, description, timeLimit, roomId)
@@ -232,6 +248,8 @@
                     name: name,
                     description: description,
                     time_limit: timeLimit,
+                    attempts: attempts,
+                    date: date,
                     room_id: roomId
                 },
                 success: (response) => {
@@ -288,39 +306,39 @@
             id = Number($(this).parents(".test-info").attr("data-test-id"));
             saveTest(id)
         })
-        $(document).on("change", ".test-info select", function () {
+        $(document).on("change", ".test-info select, .test-info input[type='date']", function () {
             id = Number($(this).parents(".test-info").attr("data-test-id"));
             saveTest(id)
         })
 
-        function downloadFile(url) {
-            console.log("Скачивание", url)
-            // Создаем временную ссылку
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = url.substr(url.lastIndexOf('/') + 1);
-
-            // Добавляем ссылку на страницу и эмулируем клик
-            $(link).appendTo('body');
-            link.click();
-
-            // Удаляем ссылку
-            $(link).remove();
-        }
-
-        $(".download-report button").click(function () {
-            $.ajax({
-                url: "<?= $link ?>/api/tests.makeReport/",
-                data: {
-                    token: localStorage.getItem("token"),
-                    test_id: testId
-                },
-                success: (response) => {
-                    console.log("test.makeReport", response)
-                    downloadFile(response["response"]);
-                }
-            })
-        })
+        //function downloadFile(url) {
+        //    console.log("Скачивание", url)
+        //    // Создаем временную ссылку
+        //    var link = document.createElement('a');
+        //    link.href = url;
+        //    link.download = url.substr(url.lastIndexOf('/') + 1);
+        //
+        //    // Добавляем ссылку на страницу и эмулируем клик
+        //    $(link).appendTo('body');
+        //    link.click();
+        //
+        //    // Удаляем ссылку
+        //    $(link).remove();
+        //}
+        //
+        //$(".download-report button").click(function () {
+        //    $.ajax({
+        //        url: "<?//= $link ?>///api/tests.makeReport/",
+        //        data: {
+        //            token: localStorage.getItem("token"),
+        //            test_id: testId
+        //        },
+        //        success: (response) => {
+        //            console.log("test.makeReport", response)
+        //            downloadFile(response["response"]);
+        //        }
+        //    })
+        //})
 
 
 	</script>

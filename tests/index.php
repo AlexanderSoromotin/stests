@@ -18,12 +18,17 @@
 
 	<main>
         <div class="container">
-            <h2 class="my-tests-title">Мои тесты <button style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px" class="btn btn-primary create-test">Создать</button></h2>
+            <h2 class="my-tests-title">
+                Мои тесты
+                <button class="btn btn-primary create-test" style="top: -2px;max-height: 30px !important; padding: 0 20px; margin-left: 10px">Создать</button>
+            </h2>
             <div class="tests-titles">
                 <div class="name">Название</div>
                 <div class="subject">Комната</div>
                 <div class="questions">Вопросов</div>
-                <div class="time">Ограничение по времени</div>
+                <div class="questions">Попыток</div>
+                <div class="time">Время</div>
+                <div class="time">Дата тестирования</div>
                 <div class="link">Перейти</div>
             </div>
             <div class="my-tests tests">
@@ -36,8 +41,9 @@
             <h2>Доступные тесты</h2>
             <div class="tests-titles">
                 <div class="name">Название</div>
-                <div class="subject">Дисциплина</div>
+                <div class="subject">Комната</div>
                 <div class="questions">Вопросов</div>
+                <div class="questions">Попыток</div>
                 <div class="time">Ограничение по времени</div>
                 <div class="link">Перейти</div>
             </div>
@@ -46,6 +52,8 @@
             </div>
         </div>
     </main>
+
+
 
 	<script type="text/javascript">
         activeHeaderTab("tests")
@@ -65,6 +73,8 @@
 
                 $(".available-tests .test").css({"display": "none"});
                 $(".tests-titles:eq(1)").css({"display": "none"});
+
+                $("#pp-create-report .list .item").remove();
 
                 $.ajax({
                     url: "<?= $link ?>/api/tests.getAll/",
@@ -94,13 +104,23 @@
                                 item["time_limit"] += " минут"
                             }
 
+                            $("#pp-create-report .list").append(`
+                            <div data-test-id="${item["id"]}" class="item">
+                                <div class="name">${item["name"]}</div>
+                                <div class="room">${item["room_name"]}</div>
+                                <div class="date">${item["available_date"].substr(0, 10).split("-").reverse().join(".")}</div>
+                            </div>
+                            `);
+
                             $(".my-tests").prepend(`
                                 <a href="<?= $link ?>/edit-test/?id=${item["id"]}">
                                     <div class="test">
                                         <div class="name">${item["name"]}</div>
                                         <div class="subject">${item["room_name"]}</div>
                                         <div class="questions">${item["questions_number"]}</div>
+                                        <div class="questions">${item["attempts"]}</div>
                                         <div class="time">${item["time_limit"]}</div>
+                                        <div class="time">${item["available_date"].substr(0, 10).split("-").reverse().join(".")}</div>
                                         <div class="link"><img src="<?= $icons ?>/arrow-right.svg" alt=""></div>
                                     </div>
                                 </a>
@@ -128,6 +148,7 @@
                                         <div class="name">${item["name"]}</div>
                                         <div class="subject">${item["room_name"]}</div>
                                         <div class="questions">${item["questions_number"]}</div>
+                                        <div class="questions">${item["attempts"]}</div>
                                         <div class="time">${item["time_limit"]}</div>
                                         <div class="link"><img src="<?= $icons ?>/arrow-right.svg" alt=""></div>
                                     </div>
@@ -154,5 +175,9 @@
         })
 
 	</script>
+
+    <?php
+        include_once "../inc/ui/footer.php";
+    ?>
 </body>
 </html>

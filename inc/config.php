@@ -10,7 +10,7 @@ $localSiteLink = "http://s-tests.com";
 
 
 // Версия основного css-файла 
-$cssVer = '?v=9';
+$cssVer = '?v=10';
 
 $icons = "https://findcreek.com/assets/img/icons/";
 

@@ -2,7 +2,7 @@ main {
 	margin-top: 140px !important;
 }
 
-.room {
+.rooms-list .room {
 	width: calc(50% - 10px);
 	transition: .2s;
 	border-radius: 15px;
@@ -89,7 +89,7 @@ main {
 }
 #pp-edit-room .copy-field {
 	margin-top: 10px;
-	margin-bottom: 30px;
+	/*margin-bottom: 30px;*/
 }
 #pp-edit-room .room-name input {
 	width: 100%;
@@ -107,4 +107,54 @@ main {
 }
 #pp-edit-room .btn-primary {
 	width: 100%;
+}
+
+
+
+
+
+
+#pp-create-report {
+	width: 650px;
+}
+#pp-create-report .list {
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	overflow-y: auto;
+	max-height: 350px;
+}
+#pp-create-report .list .item {
+	transition: .1s;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: transparent;
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+#pp-create-report .list .item:hover {
+	background-color: rgba(0, 0, 0, .05);
+}
+#pp-create-report .list .item.selected {
+	background-color: rgba(0, 0, 0, .1);
+}
+#pp-create-report button {
+	width: 100%;
+}
+
+#pp-create-report .list .item .name {
+	width: 50%;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+#pp-create-report .list .item .room {
+	width: 25%;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
 }

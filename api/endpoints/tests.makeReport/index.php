@@ -9,7 +9,7 @@ convertGetToPost();
 $tokenData = explode(".", decrypt($_POST["token"], "key"));
 $userID = (int) $tokenData[0];
 
-$response = Test::makeReport((int) $_POST["test_id"], $userID);
+$response = Test::makeReport($_POST["tests_ids"], $userID);
 echoJSON($response);
 
 // closeConnection('findcreek_id');

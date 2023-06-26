@@ -54,6 +54,7 @@
                 <div class="members custom-scrollbar"></div>
 
 
+                <button style="margin-bottom: 20px" class="open-pp btn create-report btn-primary" data-pp-id="pp-create-report">Сформировать отчёт по тестам</button>
 
                 <div>Приглашение</div>
                 <div class="copy-field">
@@ -63,13 +64,112 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+
+        <div id="pp-create-report" class="pp">
+            <div class="pp-header">
+                <h3 class="pp-title">Создание отчёта</h3>
+                <div class="pp-close"><img class="svg" src="<?= $icons ?>/x.svg" alt=""></div>
+            </div>
+            <div class="pp-content">
+                <div>Выберите тесты</div>
+                <div class="list">
+
+                </div>
+                <button class="btn download-report btn-primary">Создать и скачать</button>
             </div>
         </div>
     </div>
 
 	<script type="text/javascript">
         activeHeaderTab("rooms");
+
+        function downloadFile(url) {
+            console.log("Скачивание", url)
+            // Создаем временную ссылку
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = url.substr(url.lastIndexOf('/') + 1);
+
+            // Добавляем ссылку на страницу и эмулируем клик
+            $(link).appendTo('body');
+            link.click();
+
+            // Удаляем ссылку
+            $(link).remove();
+        }
+
+        $(document).on("click", "#pp-create-report .item", function () {
+            if ($(this).hasClass("selected")) {
+                $(this).removeClass("selected")
+                return;
+            }
+            $(this).addClass("selected")
+        })
+
+        $(".download-report").click(function () {
+            testsIds = [];
+            count = $("#pp-create-report .list .item.selected").length;
+            for (let i = 0; i < count; i++) {
+                id = $("#pp-create-report .list .item.selected:eq(" + i + ")").attr("data-test-id");
+                testsIds.push(Number(id));
+            }
+            console.log(testsIds.join());
+
+            if (testsIds.length == 0) {
+                return;
+            }
+
+            $.ajax({
+                url: "<?= $link ?>/api/tests.makeReport/",
+                data: {
+                    token: localStorage.getItem("token"),
+                    tests_ids: testsIds.join()
+                },
+                success: (response) => {
+                    console.log("test.makeReport", response)
+                    // downloadFile(response["response"]);
+                }
+            })
+        })
+
+        function updateTests (roomId) {
+            console.log("updateTests roomId", roomId);
+
+            getProfileInfo((userData) => {
+                console.log("updateTests", userData)
+
+                $("#pp-create-report .list .item").remove();
+
+                $.ajax({
+                    url: "<?= $link ?>/api/tests.getAll/",
+                    data: {
+                        token: localStorage.getItem("token"),
+                    },
+                    success: (response) => {
+                        console.log("tests.getAll", response);
+                        response = response["response"];
+
+                        for (i in response["own_tests"]) {
+                            item = response["own_tests"][i];
+
+                            if (item["room_id"] != roomId) {
+                                continue;
+                            }
+
+                            $("#pp-create-report .list").append(`
+                            <div data-test-id="${item["id"]}" class="item">
+                                <div class="name">${item["name"]}</div>
+                                <div class="room">${item["room_name"]}</div>
+                                <div class="date">${item["available_date"].substr(0, 10).split("-").reverse().join(".")}</div>
+                            </div>
+                            `);
+                        }
+                    }
+                })
+            });
+        }
 
         function getRooms () {
             getProfileInfo((userData) => {
@@ -142,7 +242,13 @@
         }
         getRooms();
 
-        $(document).on("click", ".open-pp", function () {
+        $(document).on("click", ".open-pp[data-pp-id='pp-create-report']", function () {
+            id = $(this).parents(".pp").attr("data-room-id")
+            updateTests(Number(id));
+            $(this).parents(".pp").find(".pp-close").click();
+        });
+
+        $(document).on("click", ".open-pp[data-pp-id='pp-edit-room']", function () {
 
             id = $(this).attr("data-pp-id");
             console.log(id)

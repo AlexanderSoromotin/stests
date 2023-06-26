@@ -65,7 +65,7 @@ where ro.user_id = $userID order by t.id asc;
         from test t
         join user_room ur on ur.room_id = t.room_id
         join room r on r.id = ur.room_id
-        where ur.user_id = $userID order by t.id asc;
+        where ur.user_id = $userID and DATE(t.available_date) = CURDATE() order by t.id asc;
         ");
 
         while ($item = mysqli_fetch_assoc($availableTests)) {
@@ -297,11 +297,22 @@ where ro.user_id = $userID order by t.id asc;
 
 
 
-    public static function updateTest (int $testID, $name, $description, $timeLimit, $roomID, $userID) {
+    public static function updateTest (int $testID, $name, $description, $timeLimit, $attempts, $date, $roomID, $userID) {
         openConnection('stests');
         global $connection;
 
-        mysqli_query($connection, "update test set name = '$name', description = '$description', time_limit = $timeLimit, room_ID = $roomID where id = $testID");
+        $date .= " 00:00:00";
+
+        mysqli_query($connection, "
+        update test
+        set name = '$name',
+            description = '$description',
+            time_limit = $timeLimit,
+            attempts = $attempts,
+            available_date = '$date',
+            room_id = $roomID
+        
+        where id = $testID");
 
         return formulateResponse(1);
     }
@@ -338,123 +349,196 @@ where ro.user_id = $userID order by t.id asc;
 
 
 
+    public static function getColumnIndex ($index)
+    {
+        $base = ord('A');
+        $column = '';
 
+        while ($index > 0) {
+            $index--;
+            $column = chr($index % 26 + $base) . $column;
+            $index = intval($index / 26);
+        }
 
-    public static function makeReport (int $testID, $userID) {
+        return $column;
+    }
+
+    public static function makeReport ($testsIDs, $userID) {
         openConnection('stests');
         global $connection, $link;
 
+        $testsIDs = convertStringToArray($testsIDs, ",", 1);
 
-        $result = mysqli_query($connection, "
-            select u.*
-            from test t
-            join room r on r.id = t.room_id
-            join user_room ur on ur.room_id = r.id
-            join user u on u.id = ur.user_id
-            where t.id = $testID
+        if (count($testsIDs) == 0) {
+            return formulateResponse(0);
+        }
+
+        $testID = $testsIDs[0];
+
+        $roomID = (int) mysqli_fetch_assoc(mysqli_query($connection, "
+        select r.id
+        from test t
+        join room r on t.room_id = r.id
+        where t.id = $testID
+        "))["id"];
+
+        $users = mysqli_query($connection, "
+        select u.id, u.name, u.surname, u.patronymic, u.login
+        from user_room ur
+        join user u on ur.user_id = u.id
+        where ur.room_id = $roomID
         ");
 
-        $testInfo = mysqli_fetch_assoc(mysqli_query($connection, "
-            select t.*, r.name as room_name
-            from test t
-            join room r on r.id = t.room_id
-            where t.id = $testID
-        "));
-
         $output = [
-            "users" => [],
-            "test_name" => $testInfo["name"],
-            "test_time_limit" => (int) $testInfo["time_limit"],
-            "room_name" => $testInfo["room_name"]
+            "users" => []
         ];
 
-
-        while ($item = mysqli_fetch_assoc($result)) {
-            unset($item["token"]);
-            unset($item["role_id"]);
-
-            $item["result"] = [];
-            $output["users"][(int) $item["id"]] = $item;
+        while ($item = mysqli_fetch_assoc($users)) {
+            $item["id"] = (int) $item["id"];
+            $item["results"] = [];
+            $output["users"][$item["id"]] = $item;
         }
 
-        $results = mysqli_query($connection, "select * from result where test_id = $testID");
+        $tests = mysqli_query($connection, "
+        select * 
+        from test where id IN (" . implode(",", $testsIDs) . ")
+        ");
+
+        while ($item = mysqli_fetch_assoc($tests)) {
+            $item["id"] = (int) $item["id"];
+            foreach ($output["users"] as $key => $value) {
+                $output["users"][$key]["results"][$item["id"]] = [
+                    "test_id" => $item["id"],
+                    "name" => $item["name"],
+                    "description" => $item["description"],
+                    "attempts" => (int) $item["attempts"],
+                    "attempts_spent" => 0,
+                    "time_limit" => (int) $item["time_limit"],
+                    "time_spent" => 0,
+                    "room_id" => (int) $item["room_id"],
+                    "available_date" => $item["available_date"],
+                    "score" => 0
+                ];
+            }
+        }
+
+        $results = mysqli_query($connection, "
+        select *
+        from result
+        where test_id in (" . implode(",", $testsIDs) . ")
+        ");
 
         while ($item = mysqli_fetch_assoc($results)) {
+            $item["id"] = (int) $item["id"];
+            $item["user_id"] = (int) $item["user_id"];
             $item["score"] = (int) $item["score"];
-            $output["users"][(int) $item["user_id"]]["result"] = $item;
+            $item["test_id"] = (int) $item["test_id"];
+            $item["details"] = json_decode($item["details"], 1);
+
+            $attempts = mysqli_query($connection, "
+            select id
+            from result
+            where test_id = $item[test_id] and user_id = $item[user_id]
+            ");
+
+            $output["users"][$item["user_id"]]["results"][$item["test_id"]]["score"] += $item["score"];
+            $output["users"][$item["user_id"]]["results"][$item["test_id"]]["time_spent"] = $item["details"]["time_spent"];
+            $output["users"][$item["user_id"]]["results"][$item["test_id"]]["attempts_spent"] = $attempts->num_rows;
         }
+
+//        return formulateResponse($output);
+
+
+
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->mergeCells("A1:C1");
-        $sheet->mergeCells("D1:I1");
+        // ФИО
+        $sheet->mergeCells("A2:D2");
+        $sheet->setCellValue("A2", "ФИО");
 
-        $sheet->mergeCells("A2:C2");
-        $sheet->mergeCells("D2:I2");
+        for ($i = 0; $i < count($output["users"]); $i++) {
+            $t = $i + 3;
+            $sheet->mergeCells("A$t:D$t");
+        }
 
-        $sheet->mergeCells("A3:C3");
-        $sheet->mergeCells("D3:I3");
+        $col = 6;
+        foreach (end($output["users"])["results"] as $key => $value) {
+            // Название теста
+            $sheet->mergeCells(self::getColumnIndex($col) . "1:" . self::getColumnIndex($col + 5) . "1");
 
-        $sheet->setCellValue("A1", "Название теста");
-        $sheet->setCellValue("A2", "Комната");
-        $sheet->setCellValue("A3", "Ограничение по времени");
+            // Время прохождения
+            $sheet->mergeCells(self::getColumnIndex($col) . "2:" . self::getColumnIndex($col + 1) . "2");
 
-        $sheet->setCellValue("D1", $output["test_name"]);
-        $sheet->setCellValue("D2", $output["room_name"]);
-        $sheet->setCellValue("D3", $output["test_time_limit"]);
+            // Превышение времени
+//            $sheet->mergeCells(self::getColumnIndex($col + 4) . "2:" . self::getColumnIndex($col + 5) . "2");
 
-        $sheet->mergeCells("A6:D6");
-        $sheet->mergeCells("E6:F6");
-        $sheet->mergeCells("H6:I6");
+            $sheet->setCellValue(self::getColumnIndex($col) . "1", $value["name"]);
+            $sheet->setCellValue(self::getColumnIndex($col) . "2", "Время прохождения");
+            $sheet->setCellValue(self::getColumnIndex($col + 2) . "2", "Оценка");
+            $sheet->setCellValue(self::getColumnIndex($col + 3) . "2", "Попыток");
+//            $sheet->setCellValue(self::getColumnIndex($col + 4) . "2", "Превышение времени");
 
-        $sheet->setCellValue("A6", "ФИО");
-        $sheet->setCellValue("E6", "Затрачено времени");
-        $sheet->setCellValue("G6", "Оценка");
-        $sheet->setCellValue("H6", "Статус");
+            $col += 7;
+        }
 
-        $startFrom = 7;
+
+        $row = 3;
         foreach ($output["users"] as $key => $value) {
-            $sheet->mergeCells("A$startFrom:D$startFrom");
-            $sheet->mergeCells("E$startFrom:F$startFrom");
-            $sheet->mergeCells("H$startFrom:I$startFrom");
+            // ФИО
+            $sheet->setCellValue("A$row", "$value[surname] $value[name] $value[patronymic]");
+            $sheet->mergeCells("A$row:D$row");
 
-            $sheet->setCellValue("A$startFrom", "$value[surname] $value[name] $value[patronymic]");
+            $col = 6;
+            foreach ($value["results"] as $resultID => $result) {
+                if ($result["attempts_spent"] != 0) {
+                    $result["score"] = floor($result["score"] / $result["attempts_spent"]);
+                }
+                $timeSpentSecs = $result["time_spent"] & 60;
+                $timeSpentMins = floor($result["time_spent"] / 60);
 
-            if (count($value["result"]) == 0) {
-                $sheet->setCellValue("E$startFrom", "-");
-                $sheet->setCellValue("G$startFrom", "-");
-                $sheet->setCellValue("H$startFrom", "Не решён");
-            } else {
-                $details = json_decode($value["result"]["details"], 1);
-
-                $timeSpent = (int) $details["time_spent"];
-                $secs = $timeSpent;
-                $mins = floor($timeSpent / 60);
-
-                if (strlen($secs) == 1) {
-                    $secs = "0" . $secs;
+                if ($timeSpentSecs <= 9) {
+                    $timeSpentSecs = "0" . $timeSpentSecs;
+                }
+                if ($timeSpentMins <= 9) {
+                    $timeSpentMins = "0" . $timeSpentMins;
                 }
 
-                $status = "Не засчитано";
-                if ((int) $output["test_time_limit"] * 60 >= $timeSpent or $output["test_time_limit"] == 0) {
-                    $status = "Засчитано";
+                $outTimeSpent = "$timeSpentMins:$timeSpentSecs";
+                $outAttempts = "$result[attempts_spent] из $result[attempts]";
+                $outScore = $result["score"];
 
+                if ($result["attempts_spent"] == 0) {
+                    $outTimeSpent = "не пройден";
                 }
 
-                $sheet->setCellValue("E$startFrom", "$mins:$secs");
-                $sheet->setCellValue("G$startFrom", $value["result"]["score"]);
-                $sheet->setCellValue("H$startFrom", $status);
+                if ($result["time_limit"] == 0) {
+                    $outTimeSpent = "без таймера";
+                }
+
+                // Время прохождения
+                $sheet->mergeCells(self::getColumnIndex($col) . "$row:" . self::getColumnIndex($col + 1) . "$row");
+                $sheet->setCellValue(self::getColumnIndex($col) . "$row", $outTimeSpent);
+
+                $sheet->setCellValue(self::getColumnIndex($col + 2) . "$row", $outScore);
+                $sheet->setCellValue(self::getColumnIndex($col + 3) . "$row", $outAttempts);
+
+                // Превышение времени
+//                $sheet->mergeCells(self::getColumnIndex($col + 4) . "$row:" . self::getColumnIndex($col + 5) . "$row");
+//                $sheet->setCellValue(self::getColumnIndex($col + 4) . "$row", "на 00:12");
+
+                $col += 7;
             }
-
-            $startFrom++;
+            $row++;
         }
 
         $writer = new Xlsx($spreadsheet);
-        $fileName = $output["room_name"] . " - " . $output["test_name"] . ' - ' . date("d.m.Y H-i-s") . '.xlsx';
-//        $fileName = rand(1, 1000000000000) . ".xlsx";
+//        $fileName = $output["room_name"] . " - " . $output["test_name"] . ' - ' . date("d.m.Y H-i-s") . '.xlsx';
+        $fileName = date("d.m.Y H-i-s") . ".xlsx";
         $writer->save('../../../storage/' . $fileName);
 
+        return formulateResponse($output);
         return formulateResponse("$link/storage/" . $fileName);
     }
 

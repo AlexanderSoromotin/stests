@@ -129,7 +129,7 @@
                 },
                 success: (response) => {
                     console.log("test.makeReport", response)
-                    // downloadFile(response["response"]);
+                    downloadFile(response["response"]);
                 }
             })
         })

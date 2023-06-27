@@ -5,30 +5,6 @@ include_once "includes.php";
 
 class Room {
 
-	public function test ($test) {
-		openConnection('findcreek_mate');
-
-		global $connection_mate;
-		
-		if ($test == "") {
-			return formulateError(4, "Invalid test");
-		}
-
-		return formulateResponse(1);		
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public static function getAll ($userID) {
 		openConnection('stests');
 		global $connection;
@@ -64,9 +40,6 @@ class Room {
 
 		return formulateResponse($output);		
 	}
-
-
-
 
     public static function getInfo ($roomID) {
         openConnection('stests');
@@ -111,11 +84,6 @@ class Room {
         return formulateResponse($output);
     }
 
-
-
-
-
-
     public static function setInfo ($roomID, $name) {
         openConnection('stests');
         global $connection;
@@ -125,9 +93,6 @@ class Room {
         return formulateResponse(1);
     }
 
-
-
-
     public static function removeUser ($userID, $roomID, $primaryUserID) {
         openConnection('stests');
         global $connection;
@@ -136,10 +101,6 @@ class Room {
 
         return formulateResponse(1);
     }
-
-
-
-
 
     public static function getInfoByInvitation ($userID, $invitationID) {
         openConnection('stests');
@@ -197,12 +158,6 @@ class Room {
         return formulateResponse($output);
     }
 
-
-
-
-
-
-
     public static function join ($userID, $invitationID) {
         openConnection('stests');
         global $connection;
@@ -256,10 +211,6 @@ class Room {
         return formulateResponse($canJoin);
     }
 
-
-
-
-
     public static function create ($userID) {
         openConnection('stests');
         global $connection;
@@ -282,12 +233,6 @@ class Room {
 
         return formulateResponse(1);
     }
-
-
-
-
-
-
 }
 
 

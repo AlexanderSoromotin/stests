@@ -10,30 +10,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Test {
 
-	public function test ($test) {
-		openConnection('findcreek_mate');
-
-		global $connection_mate;
-		
-		if ($test == "") {
-			return formulateError(4, "Invalid test");
-		}
-
-		return formulateResponse(1);		
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public static function getAll ($userID) {
 		openConnection('stests');
 		global $connection;
@@ -82,9 +58,6 @@ where ro.user_id = $userID order by t.id asc;
 		return formulateResponse($output);		
 	}
 
-
-
-
     public static function getInfo (int $testID, $userID = 0) {
         openConnection('stests');
         global $connection;
@@ -108,15 +81,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse($result);
     }
-
-
-
-
-
-
-
-
-
 
     public static function start (int $testID, $userID) {
         openConnection('stests');
@@ -146,10 +110,6 @@ where ro.user_id = $userID order by t.id asc;
         return formulateResponse($output);
     }
 
-
-
-
-
     public static function getQuestions (int $testID, $userID) {
         openConnection('stests');
         global $connection;
@@ -175,10 +135,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse($output);
     }
-
-
-
-
 
     public static function addResult (int $testID, int $userID, $encodedAnswers, int $time) {
         openConnection('stests');
@@ -235,11 +191,6 @@ where ro.user_id = $userID order by t.id asc;
         return formulateResponse($output);
     }
 
-
-
-
-
-
     public static function getResults (int $userID) {
         openConnection('stests');
         global $connection;
@@ -272,13 +223,6 @@ where ro.user_id = $userID order by t.id asc;
         return formulateResponse($output);
     }
 
-
-
-
-
-
-
-
     public static function updateQuestion (int $questionID, $title, $details, $userID) {
         openConnection('stests');
         global $connection;
@@ -294,8 +238,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse($details);
     }
-
-
 
     public static function updateTest (int $testID, $name, $description, $timeLimit, $attempts, $date, $roomID, $userID) {
         openConnection('stests');
@@ -316,8 +258,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse(1);
     }
-
-
 
     public static function addQuestion (int $testID, $userID) {
         openConnection('stests');
@@ -346,8 +286,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse($id);
     }
-
-
 
     public static function getColumnIndex ($index)
     {
@@ -542,13 +480,6 @@ where ro.user_id = $userID order by t.id asc;
         return formulateResponse("$link/storage/" . $fileName);
     }
 
-
-
-
-
-
-
-
     public static function create (int $userID) {
         openConnection('stests');
         global $connection;
@@ -574,7 +505,6 @@ where ro.user_id = $userID order by t.id asc;
 
         return formulateResponse(1);
     }
-
 }
 
 
